@@ -35,7 +35,7 @@ if(user === ADMIN_USER && pass === ADMIN_PASS){
 
 localStorage.setItem("adminLoggedIn","true");
 
-window.location.href = "admin-dashboard.html";
+window.location.href = "Admi-dashboard.html";
 
 }else{
 
@@ -61,11 +61,11 @@ document.getElementById("error").innerText = "Wrong login details";
 <script>
 
 // protect dashboard
-if(localStorage.getItem("adminLoggedIn") !== "true"){
+if(localStorage.getItem("AdmiLoggedIn") !== "true"){
 
 alert("Access denied");
 
-window.location.href = "admin-login.html";
+window.location.href = "Admi.html";
 
 }
 
@@ -128,7 +128,7 @@ function logout(){
 
 localStorage.removeItem("adminLoggedIn");
 
-window.location.href = "admin-login.html";
+window.location.href = "Admi.html";
 
 }
 
