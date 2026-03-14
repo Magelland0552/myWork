@@ -8,18 +8,16 @@
 <body class="p-5">
 
 <script>
-
-// protect dashboard
+// Protect dashboard
 if(localStorage.getItem("adminLoggedIn") !== "true"){
-
-alert("Access denied");
-window.location.href = "admin-login.html";
-
+    alert("Access denied");
+    window.location.href = "admin-login.html";
 }
-
 </script>
 
-<h2>Admin Dashboard</h2>
+<div class="container">
+
+<h2 class="mb-4">Admin Dashboard</h2>
 
 <button class="btn btn-danger mb-4" onclick="logout()">Logout</button>
 
@@ -28,12 +26,15 @@ window.location.href = "admin-login.html";
 <h4>Add Product</h4>
 
 <input id="pname" class="form-control mb-2" placeholder="Product Name">
-
 <input id="pprice" type="number" class="form-control mb-2" placeholder="Price">
 
-<button class="btn btn-success" onclick="addProduct()">Add Product</button>
+<button class="btn btn-success mb-3" onclick="addProduct()">Add Product</button>
 
-<ul id="productList" class="mt-4"></ul>
+<h4>Product List</h4>
+
+<ul id="productList" class="list-group"></ul>
+
+</div>
 
 <script>
 
@@ -41,15 +42,22 @@ let products = JSON.parse(localStorage.getItem("products")) || [];
 
 function addProduct(){
 
-let name = document.getElementById("pname").value;
+let name = document.getElementById("pname").value.trim();
 let price = document.getElementById("pprice").value;
+
+if(name === "" || price === ""){
+alert("Please enter product name and price");
+return;
+}
 
 products.push({name,price});
 
 localStorage.setItem("products",JSON.stringify(products));
 
-showProducts();
+document.getElementById("pname").value="";
+document.getElementById("pprice").value="";
 
+showProducts();
 }
 
 function showProducts(){
@@ -58,11 +66,16 @@ let list = document.getElementById("productList");
 
 list.innerHTML="";
 
-products.forEach(p=>{
+products.forEach((p,index)=>{
 
 let li = document.createElement("li");
 
-li.innerText = p.name + " - $" + p.price;
+li.className="list-group-item d-flex justify-content-between align-items-center";
+
+li.innerHTML = `
+${p.name} - $${p.price}
+<button class="btn btn-sm btn-danger" onclick="deleteProduct(${index})">Delete</button>
+`;
 
 list.appendChild(li);
 
@@ -70,7 +83,15 @@ list.appendChild(li);
 
 }
 
+function deleteProduct(index){
+
+products.splice(index,1);
+
+localStorage.setItem("products",JSON.stringify(products));
+
 showProducts();
+
+}
 
 function logout(){
 
@@ -79,6 +100,8 @@ localStorage.removeItem("adminLoggedIn");
 window.location.href = "admin-login.html";
 
 }
+
+showProducts();
 
 </script>
 
