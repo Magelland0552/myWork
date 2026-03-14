@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin - Magelland</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="p-5">
+
+<h2>Admin Dashboard</h2>
+
+<div class="mb-3">
+<input type="text" id="productName" placeholder="Product Name" class="form-control mb-2">
+<input type="number" id="productPrice" placeholder="Price" class="form-control mb-2">
+<select id="productCategory" class="form-control mb-2">
+<option value="shoe">Shoe</option>
+<option value="phone">Phone</option>
+</select>
+<button class="btn btn-success" onclick="addProduct()">Add Product</button>
+</div>
+
+<h3 class="mt-4">Current Products</h3>
+<ul id="productList"></ul>
+
+<script>
+// Load products
+let products = JSON.parse(localStorage.getItem("products")) || [];
+
+function renderProducts(){
+let list = document.getElementById("productList");
+list.innerHTML = "";
+products.forEach((p, i)=>{
+let li = document.createElement("li");
+li.innerText = `${p.name} - $${p.price} (${p.category})`;
+list.appendChild(li);
+});
+}
+renderProducts();
+
+// Add product
+function addProduct(){
+let name = document.getElementById("productName").value;
+let price = document.getElementById("productPrice").value;
+let category = document.getElementById("productCategory").value;
+if(name && price){
+products.push({name, price, category});
+localStorage.setItem("products", JSON.stringify(products));
+renderProducts();
+document.getElementById("productName").value = "";
+document.getElementById("productPrice").value = "";
+alert(name + " added!");
+}
+}
+  <script>
+let adminPassword = "magelland123"; // only you know this
+function adminLogin(){
+let pass = prompt("Enter Admin Password:");
+if(pass === adminPassword){
+alert("Access granted");
+}else{
+alert("Access denied");
+window.location.href = "/index.html";
+}
+}
+adminLogin();
+</script>
+</script>
+</body>
+</html>
